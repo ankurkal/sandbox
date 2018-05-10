@@ -1,10 +1,11 @@
 # MD101 - Creating a Simple REST Microservice
 
 ## Introduction
-TODO
+The goal of this module is to create a fully functional RESTful microservice from scratch, and corresponding unit/integration tests.
 
 ## Prerequisites
 * MD100 or a basic understanding of Java, Maven, and Spring Boot/Spring MVC
+
 ## Module Instructions
 
 ### TODO - Ticket Monster Outline/Problem Statement for the rest of the modules
