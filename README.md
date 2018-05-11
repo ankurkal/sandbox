@@ -8,7 +8,7 @@ The goal of this module is to create a fully functional RESTful microservice fro
 
 
 [Step 1 - Defining a User](step_1/README.md)
-### TODO - Create a controller to retrieve pojo(in memory)
-### TODO - Creating basic unit and integration tests
-### TODO - Writing tests for additional functionality
-### TODO - Implement all CRUD functionality for data model
+[Step 2 - Retrieving a User via RESTful HTTP](step_2/README.md)
+[Step 3 - Checking our work via Unit and Integration tests](step_3/README.md)
+[Step 4 - Creating and Updating users](step_4/README.md)
+[Step 5 - Deleting users](step_5/README.md)
