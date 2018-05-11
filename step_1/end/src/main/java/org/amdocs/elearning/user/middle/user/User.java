@@ -1,4 +1,4 @@
-package org.amdocs.elearning.user.middle;
+package org.amdocs.elearning.user.middle.user;
 
 
 import java.util.Date;
