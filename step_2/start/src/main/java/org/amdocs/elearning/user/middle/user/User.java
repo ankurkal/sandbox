@@ -1,31 +1,26 @@
 package org.amdocs.elearning.user.middle.user;
 
-import java.time.LocalDate;
+
+import java.util.Date;
 
 public class User {
 
-    private String id;
     private String firstName;
     private String lastName;
     private String middleInitial;
     private UserType userType;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
 
     public User(){
 
     }
 
-    public User(String id, String firstName, String lastName, String middleInitial, UserType userType, LocalDate dateOfBirth) {
-        this.id = id;
+    public User(String firstName, String lastName, String middleInitial, UserType userType, Date dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleInitial = middleInitial;
         this.userType = userType;
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getFirstName() {
@@ -44,7 +39,7 @@ public class User {
         return userType;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 }
