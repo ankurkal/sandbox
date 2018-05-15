@@ -1,0 +1,43 @@
+package org.amdocs.elearning.user.middle;
+
+import org.amdocs.elearning.user.middle.user.User;
+import org.amdocs.elearning.user.middle.user.UserController;
+import org.amdocs.elearning.user.middle.user.UserService;
+import org.amdocs.elearning.user.middle.user.UserType;
+import org.junit.Assert;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.UUID;
+
+public class UserControllerTest {
+
+
+    UserService userService = Mockito.mock(UserService.class);
+    final UserController controller = new UserController(userService);
+
+    @Test
+    public void getUserById_Match(){
+
+        System.out.println(UUID.randomUUID().toString());
+        Mockito.when(userService.getUserById(Mockito.anyString())).thenReturn(Optional.of(new User("id", "firstName", "lastName", "middleInitial", UserType.PATRON, LocalDate.now())));
+
+        final ResponseEntity<User> responseEntity = this.controller.getUser("id");
+        Assert.assertEquals(200, responseEntity.getStatusCodeValue());
+        Assert.assertNotNull(responseEntity.getBody());
+    }
+
+    @Test
+    public void getUserById_NoMatch(){
+        Mockito.when(userService.getUserById(Mockito.anyString())).thenReturn(Optional.empty());
+
+        final ResponseEntity<User> responseEntity = this.controller.getUser("id");
+
+        Assert.assertEquals(404, responseEntity.getStatusCodeValue());
+        Assert.assertNull(responseEntity.getBody());
+    }
+
+}
