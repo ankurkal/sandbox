@@ -1,5 +1,7 @@
-1. Creating and Updating users (PUT and POST)
+1. RESTful creation of resources
 
-2. Implementing Create
+2. Implementing a POST
 
-3. Implementing Update
+3. Basic request validation via @Valid and @NotNull
+
+4. Testing

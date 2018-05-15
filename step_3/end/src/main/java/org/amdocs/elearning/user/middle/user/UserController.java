@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -19,7 +20,6 @@ public class UserController {
     public UserController(final UserService userService){
         this.userService = userService;
     }
-
 
     @RequestMapping(path="/{id}", method = RequestMethod.GET)
     public ResponseEntity<User> getUser(@PathVariable final String id){

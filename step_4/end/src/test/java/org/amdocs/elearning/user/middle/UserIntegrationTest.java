@@ -32,14 +32,14 @@ public class UserIntegrationTest {
 
     @Test
     public void testGetUserById_Match() throws Exception {
-        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/1", User.class);
+        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/user/1", User.class);
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
         Assert.assertNotNull(responseEntity.getBody());
     }
 
     @Test
     public void testGetUserById_NoMatch() throws Exception {
-        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/abc", User.class);
+        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/user/abc", User.class);
         Assert.assertEquals(404, responseEntity.getStatusCodeValue());
         Assert.assertNull(responseEntity.getBody());
     }
