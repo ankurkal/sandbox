@@ -30,12 +30,11 @@ public class UserControllerTest {
 
     @Test
     public void getUserById_NoMatch(){
-
         Mockito.when(userService.getUserById(Mockito.anyString())).thenReturn(Optional.empty());
 
         final ResponseEntity<User> responseEntity = this.controller.getUser("id");
-        Assert.assertEquals(404, responseEntity.getStatusCodeValue());
-        Assert.assertNull(responseEntity.getBody());
+
+
     }
 
     @Test
@@ -51,5 +50,17 @@ public class UserControllerTest {
         Assert.assertEquals(createdUser, responseEntity.getBody());
     }
 
+
+    @Test
+    public void updateUser(){
+        final User updateRequestUser = new User(null, "test", "test", "t", UserType.PATRON, LocalDate.now());
+        final User updatedUser = new User("1", "test", "test", "t", UserType.PATRON, LocalDate.now());
+
+        Mockito.when(userService.updateUser(Mockito.anyString(), Mockito.any())).thenReturn(updatedUser);
+        final ResponseEntity<User> responseEntity = this.controller.updateUser("1", updateRequestUser);
+
+        Assert.assertEquals(200, responseEntity.getStatusCodeValue());
+        Assert.assertEquals(updatedUser, responseEntity.getBody());
+    }
 
 }

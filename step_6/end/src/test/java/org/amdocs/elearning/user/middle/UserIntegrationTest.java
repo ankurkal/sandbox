@@ -50,4 +50,19 @@ public class UserIntegrationTest {
         Assert.assertEquals(201, responseEntity.getStatusCodeValue());
         Assert.assertNotNull(responseEntity.getBody());
     }
+
+    @Test
+    public void updateUser() throws Exception {
+
+        final User user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
+
+        this.restTemplate.put("http://localhost:" + port + "/user/00000000-0000-0000-0000-000000000000", user, User.class);
+
+        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/user/00000000-0000-0000-0000-000000000000", User.class);
+        Assert.assertEquals(200, responseEntity.getStatusCodeValue());
+        Assert.assertEquals("firstName", responseEntity.getBody().getFirstName());
+        Assert.assertEquals("lastName", responseEntity.getBody().getLastName());
+    }
+
+
 }

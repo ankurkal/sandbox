@@ -38,4 +38,15 @@ public class UserServiceTest {
         Assert.assertTrue(retrievedUser.isPresent());
         Assert.assertEquals(createdUser, retrievedUser.get());
     }
+
+    @Test
+    public void testUpdateUser(){
+        final User updatedUser = new User(null, "new first", "new last", "M", UserType.PATRON, LocalDate.now());
+        final User modifiedUser = userService.updateUser("00000000-0000-0000-0000-000000000000", updatedUser);
+
+        final Optional<User> retrievedUser = userService.getUserById("00000000-0000-0000-0000-000000000000");
+        Assert.assertTrue(retrievedUser.isPresent());
+        Assert.assertEquals(modifiedUser, retrievedUser.get());
+    }
+
 }

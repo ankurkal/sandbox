@@ -28,4 +28,13 @@ public class UserService {
         users.add(user);
         return user;
     }
+
+    public User updateUser(final String userId, final User user){
+        //Set user id before remove/replace
+        user.setId(userId);
+        users.removeIf(u -> u.getId().equalsIgnoreCase(userId));
+        users.add(user);
+        return user;
+    }
+
 }

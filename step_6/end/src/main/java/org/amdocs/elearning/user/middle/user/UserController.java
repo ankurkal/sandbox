@@ -3,6 +3,7 @@ package org.amdocs.elearning.user.middle.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,13 @@ public class UserController {
         }
 
         return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(path="/{id}", method=RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@PathVariable final String id, @RequestBody @Valid final User user){
+
+        final User updatedUser = this.userService.updateUser(id, user);
+        return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
     }
 
     @RequestMapping(method=RequestMethod.POST)
