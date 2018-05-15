@@ -19,7 +19,10 @@ The goal of this module is to create a fully functional RESTful microservice fro
 [Step 4 - Checking our work via Unit and Integration Tests](step_4/README.md)
 
 
-[Step 5 - Creating and Updating Users](step_5/README.md)
+[Step 5 - Creating New Users](step_5/README.md)
 
 
-[Step 6 - Deleting Users](step_6/README.md)
+[Step 6 - Updating Existing Users](step_6/README.md)
+
+
+[Step 7 - Deleting Users](step_7/README.md)
