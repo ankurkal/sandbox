@@ -22,8 +22,23 @@ In this module, we will introduce a fictional company we will be building micros
 
 
 ## Introducing Ticket Monster
-TODO
 
+### What is Ticket Monster?
+TODO: What is Ticket Monster, and how does this fit into the training modules?
+
+### What will we be building?
+TODO: Architecture diagram, user management system
+
+### Where do we begin?
+TODO: Specifications of a user, lead in to step 1
+
+
+## Getting hands on
+
+Now that we know our what we need to build, let's start building it. We will begin with a single microservice called "user-middle", whose job is to handle creation, retrieval, updating, and deletion(CRUD, for short) of users. This microservice will store it's user data in memory for the time being, and by way of REST, we will be able to perform the aforementioned CRUD actions.
+
+### How these modules work
+These modules are broken down into steps, such as the step listed below. Each step has a start and end folder, with an isolated java project within it. The "start" state is where the instructions assume you are beginning from. The "end" state is an example of what you should have when the step is completed.
 
 [Step 1 - Defining a User](step_1/README.md)
 
