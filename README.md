@@ -1,10 +1,31 @@
 # MD101 - Creating a Simple REST Microservice
 
 ## Introduction
-The goal of this module is to create a fully functional RESTful microservice from scratch, and corresponding unit/integration tests.
+In this module, we will introduce a fictional company we will be building microservices for called Ticket Monster. We will explore this company's needs, and use microservices to implement a solution. Throughout these courses, we will continue to build up our Ticket Monster microservice system. As a first step, we will build a single REST microservice from scratch.
 
-## Prerequisites
-* MD100 or a basic understanding of Java, Maven, and Spring Boot/Spring MVC
+
+---
+
+
+## Skill Check
+### Prerequisites 
+* MD100 *or* a beginners understanding of:
+- Java
+- Maven
+- Spring Boot/Spring REST
+
+### Outcome
+* An understanding of the Ticket Monster project, and what we will be building over the next several courses
+* The basics of Spring dependency injection
+* How unit and integration tests fit into the development cycle, and how to write them
+* How to model RESTful entities, and how to design/implement simple REST APIs
+
+
+---
+
+
+## Introducing Ticket Monster
+TODO
 
 
 [Step 1 - Defining a User](step_1/README.md)
