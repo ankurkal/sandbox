@@ -9,10 +9,7 @@ In this module, we will introduce a fictional company we will be building micros
 
 ## Skill Check
 ### Prerequisites 
-* MD100 *or* a beginners understanding of:
-- Java
-- Maven
-- Spring Boot/Spring REST
+* MD100 OR a beginners understanding of Java, Maven, and Spring Boot/Spring REST
 
 ### Outcome
 * An understanding of the Ticket Monster project, and what we will be building over the next several courses
