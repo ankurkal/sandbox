@@ -1,5 +1,3 @@
-1. Problem statement/definition
-2. Modeling a User Object, creating a User package
-3. Implementing a User POJO, and UserType enum
-
-TODO: Contract and RESTful entitys
+1. RESTful operations - GET
+2. Implementing a REST controller, setting the user path on the class level
+3. Implementing the GET resource, and utilizing a path param
