@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -32,6 +34,13 @@ public class UserController {
         }
 
         return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(method=RequestMethod.POST)
+    public ResponseEntity<User> createUser(@RequestBody @Valid final User user){
+
+        final User createdUser = this.userService.createUser(user);
+        return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
     }
 
 }
