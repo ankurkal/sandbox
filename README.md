@@ -1,3 +1,4 @@
-1. RESTful operations - GET
-2. Implementing a REST controller, setting the user path on the class level
-3. Implementing the GET resource, and utilizing a path param
+1. Services and controllers, where to place business logic
+2. Creating of a service, and binding via dependency injection
+3. Moving service logic into the service
+4. Re-testing, and seeing the same result
