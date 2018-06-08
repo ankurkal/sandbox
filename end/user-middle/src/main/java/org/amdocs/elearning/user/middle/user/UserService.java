@@ -21,11 +21,9 @@ public class UserService {
         return users.stream().filter(user -> user.getId().equals(id)).findFirst();
     }
 
-    public User createUser(final User user){
-        //Create user id
-        user.setId(UUID.randomUUID().toString());
-        //Add user to user list
-        users.add(user);
-        return user;
+    public User createUser(final UserDetails userDetails){
+    	final User newUser = new User(UUID.randomUUID().toString(), userDetails);
+        users.add(newUser);
+        return newUser;
     }
 }

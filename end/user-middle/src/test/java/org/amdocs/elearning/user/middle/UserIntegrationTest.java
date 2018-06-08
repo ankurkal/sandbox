@@ -2,6 +2,7 @@ package org.amdocs.elearning.user.middle;
 
 
 import org.amdocs.elearning.user.middle.user.User;
+import org.amdocs.elearning.user.middle.user.UserDetails;
 import org.amdocs.elearning.user.middle.user.UserType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,7 +45,7 @@ public class UserIntegrationTest {
     @Test
     public void createUser() throws Exception {
 
-        final User user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
+        final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
         final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/user", user, User.class);
 
         Assert.assertEquals(201, responseEntity.getStatusCodeValue());

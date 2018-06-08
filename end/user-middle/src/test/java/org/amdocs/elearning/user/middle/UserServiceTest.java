@@ -2,6 +2,7 @@ package org.amdocs.elearning.user.middle;
 
 
 import org.amdocs.elearning.user.middle.user.User;
+import org.amdocs.elearning.user.middle.user.UserDetails;
 import org.amdocs.elearning.user.middle.user.UserService;
 import org.amdocs.elearning.user.middle.user.UserType;
 import org.junit.Assert;
@@ -31,7 +32,7 @@ public class UserServiceTest {
 
     @Test
     public void testCreateUser(){
-        final User newUser = new User(null, "new first", "new last", "M", UserType.PATRON, LocalDate.now());
+        final UserDetails newUser = new UserDetails("new first", "new last", "M", UserType.PATRON, LocalDate.now());
         final User createdUser = userService.createUser(newUser);
         final Optional<User> retrievedUser = userService.getUserById(createdUser.getId());
 

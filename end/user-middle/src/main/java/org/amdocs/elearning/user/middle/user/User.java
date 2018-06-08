@@ -1,26 +1,22 @@
 package org.amdocs.elearning.user.middle.user;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class User {
+public class User extends UserDetails {
 
     private String id;
-    @NotNull
-    private String firstName;
-    @NotNull
-    private String lastName;
-    @NotNull
-    private String middleInitial;
-    @NotNull
-    private UserType userType;
-    @NotNull
-    private LocalDate dateOfBirth;
-
+    
     public User(){
 
+    }
+    
+    public User(final String id, final UserDetails details){
+    	this.id = id;
+        this.firstName = details.getFirstName();
+        this.lastName = details.getLastName();
+        this.middleInitial = details.getMiddleInitial();
+        this.userType = details.getUserType();
+        this.dateOfBirth = details.getDateOfBirth();
     }
 
     public User(String id, String firstName, String lastName, String middleInitial, UserType userType, LocalDate dateOfBirth) {
@@ -34,29 +30,5 @@ public class User {
 
     public String getId() {
         return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getMiddleInitial() {
-        return middleInitial;
-    }
-
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setId(final String id){
-        this.id = id;
     }
 }
