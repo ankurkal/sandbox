@@ -9,10 +9,10 @@ TODO: Explain POST and how it pertains to RESTful HTTP. Explain how we will be c
 TODO: Explain what code changes to make to allow creation of users from the REST and service layers
 
 ## Handling the ID field
-TODO: We want to generate a random uuid for our user id, introduce setter for id, and how users shouldnt need to pass this field
+TODO: We want to generate a random uuid for our user id, User/UserDetails objects, and how users shouldnt need to pass this field
 
 ## Validating our request
-TODO: How do we know our data is good? Introduce @NotNull annotations into our User pojo, and @Valid for our request body
+TODO: How do we know our data is good? Introduce @NotNull annotations into our UserDetails pojo, and @Valid for our request body
 
 ## Updating our tests
 TODO: Implement additional unit/integration tests
