@@ -26,4 +26,8 @@ public class UserService {
         users.add(newUser);
         return newUser;
     }
+
+    public List<User> getAllUsers() {
+        return users;
+    }
 }
