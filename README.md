@@ -143,10 +143,12 @@ First, we have to re-package our application by running `mvn clean verify packag
 At this point, if we go through the logs, we should see something similar to:
 
 _Passing Tests_
+
 ![Unit Tests](images/PassingTests.png "Unit Test")
 ![Integration Tests](images/integration.png "Integration Test")
 
 _Successful Build_
+
 ![Successful Build](images/success.png "Successful Build")
 
 
