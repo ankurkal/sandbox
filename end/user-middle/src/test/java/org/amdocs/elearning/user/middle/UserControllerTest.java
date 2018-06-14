@@ -40,7 +40,6 @@ public class UserControllerTest {
 
     @Test
     public void createUser(){
-
         final User createRequestUser = new User(null, "test", "test", "t", UserType.PATRON, LocalDate.now());
         final User createdUser = new User("1", "test", "test", "t", UserType.PATRON, LocalDate.now());
 
@@ -50,6 +49,4 @@ public class UserControllerTest {
         Assert.assertEquals(201, responseEntity.getStatusCodeValue());
         Assert.assertEquals(createdUser, responseEntity.getBody());
     }
-
-
 }
