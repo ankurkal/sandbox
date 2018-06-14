@@ -18,7 +18,7 @@ public class UserServiceTest {
 
     @Test
     public void testGetUser_Match(){
-        final Optional<User> user = userService.getUserById("00000000-0000-0000-0000-000000000000");
+        final Optional<User> user = userService.getUserById("0");
 
         Assert.assertEquals(true, user.isPresent());
     }
