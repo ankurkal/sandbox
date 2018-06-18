@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;

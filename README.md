@@ -26,7 +26,7 @@ and not guaranteed to be repeatable without potentially undesirable side effects
 We will be creating a new endpoint that uses the _POST_ verb to create new Users for our application. When we are done, we should have an endpoint that looks something like this:
 ```
 Request:
-HTTP POST /user
+HTTP POST /users
 {"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1-1-1980"}
 
 Response:
@@ -181,7 +181,7 @@ Your code should look something like this:
 
 ```
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
     private final UserService userService;
 
@@ -200,7 +200,7 @@ public class UserController {
 ```
 
 #### What's going on here?
-- We use `@RequestMapping` and `RequestMethod.POST` to tell Spring to map this method to an HTTP POST to /user
+- We use `@RequestMapping` and `RequestMethod.POST` to tell Spring to map this method to an HTTP POST to /users
 - We use `@RequestBody` to tell Spring that we want to accept a request body that's represented by the UserDetails object. We're going to be sending JSON, and the serialization/deserialization is handled automatically by way of Spring and Jackson.
 - We accept the UserDetails object, and delegate to User service to create the user
 - We return an HTTP 201 on success. HTTP 201 signifies that an entity was created. We also return the newly created user as JSON
@@ -213,15 +213,15 @@ is being passed in, and the business logic (in this case the _UserService_).
 ### Building and Running
 It's time to restart our server and see what we have built. From the terminal, re-run `mvn clean package` followed by `java -jar target/*.jar`. But how will we actually access our endpoint? We can't exactly use the browser as we could with a regular GET request without a fair amount of work and integration. For this exercise, we are going to use `cURL` - a command line utility for making HTTP requests. In a terminal window, once your server is running, run the following command:
 ```
-curl -v -X POST "http://localhost:8080/user" -H "Content-Type: application/json" -d '{"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
+curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
 ```
 
 Your output should look something like:
 ```
-curl -v -X POST "http://localhost:8080/user" -H "Content-Type: application/json" -d '{"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
+curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
 *   Trying 127.0.0.1...
 * Connected to localhost (127.0.0.1) port 8080 (#0)
-> POST /user HTTP/1.1
+> POST /users HTTP/1.1
 > Host: localhost:8080
 > User-Agent: curl/7.43.0
 > Accept: */*
@@ -238,12 +238,12 @@ curl -v -X POST "http://localhost:8080/user" -H "Content-Type: application/json"
 {"firstName":"test","lastName":"name","middleInitial":"a","userType":"PATRON","dateOfBirth":"1980-01-01","id":"2"}
 ```
 
-Now, we should be able to call an HTTP GET on /user/2 and get our user back. In cURL, this looks like:
+Now, we should be able to call an HTTP GET on /users/2 and get our user back. In cURL, this looks like:
 ```
-curl -v "http://localhost:8080/user/2"
+curl -v "http://localhost:8080/users/2"
 *   Trying 127.0.0.1...
 * Connected to localhost (127.0.0.1) port 8080 (#0)
-> GET /user/2 HTTP/1.1
+> GET /users/2 HTTP/1.1
 > Host: localhost:8080
 > User-Agent: curl/7.43.0
 > Accept: */*
@@ -295,10 +295,10 @@ UserController create method:
 Now, let's rebuild and restart our server, and try the following cURL command:
 
 ```
-curl -v -X POST "http://localhost:8080/user" -H "Content-Type: application/json" -d '{"lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
+curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
 *   Trying 127.0.0.1...
 * Connected to localhost (127.0.0.1) port 8080 (#0)
-> POST /user HTTP/1.1
+> POST /users HTTP/1.1
 > Host: localhost:8080
 > User-Agent: curl/7.43.0
 > Accept: */*
@@ -313,7 +313,7 @@ curl -v -X POST "http://localhost:8080/user" -H "Content-Type: application/json"
 < Connection: close
 <
 * Closing connection 0
-{"timestamp":"2018-06-14T16:30:24.847+0000","status":400,"error":"Bad Request","errors":[{"codes":["NotNull.userDetails.firstName","NotNull.firstName","NotNull.java.lang.String","NotNull"],"arguments":[{"codes":["userDetails.firstName","firstName"],"arguments":null,"defaultMessage":"firstName","code":"firstName"}],"defaultMessage":"must not be null","objectName":"userDetails","field":"firstName","rejectedValue":null,"bindingFailure":false,"code":"NotNull"}],"message":"Validation failed for object='userDetails'. Error count: 1","path":"/user"}
+{"timestamp":"2018-06-14T16:30:24.847+0000","status":400,"error":"Bad Request","errors":[{"codes":["NotNull.userDetails.firstName","NotNull.firstName","NotNull.java.lang.String","NotNull"],"arguments":[{"codes":["userDetails.firstName","firstName"],"arguments":null,"defaultMessage":"firstName","code":"firstName"}],"defaultMessage":"must not be null","objectName":"userDetails","field":"firstName","rejectedValue":null,"bindingFailure":false,"code":"NotNull"}],"message":"Validation failed for object='userDetails'. Error count: 1","path":"/users"}
 ```
 
 ### What just happened?
@@ -383,7 +383,7 @@ public class UserIntegrationTest {
     @Test
     public void createUser() throws Exception {
         final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
-        final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/user", user, User.class);
+        final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/users", user, User.class);
     
         Assert.assertEquals(201, responseEntity.getStatusCodeValue());
         Assert.assertNotNull(responseEntity.getBody()); 
