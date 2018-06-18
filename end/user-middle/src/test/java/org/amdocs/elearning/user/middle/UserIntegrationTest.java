@@ -30,14 +30,14 @@ public class UserIntegrationTest {
 
     @Test
     public void getUserById_Match() throws Exception {
-        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/user/0", User.class);
+        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/users/0", User.class);
         Assert.assertEquals(200, responseEntity.getStatusCodeValue());
         Assert.assertNotNull(responseEntity.getBody());
     }
 
     @Test
     public void getUserById_NoMatch() throws Exception {
-        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/user/abc", User.class);
+        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/users/abc", User.class);
         Assert.assertEquals(404, responseEntity.getStatusCodeValue());
         Assert.assertNull(responseEntity.getBody());
     }
@@ -46,7 +46,7 @@ public class UserIntegrationTest {
     public void createUser() throws Exception {
 
         final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
-        final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/user", user, User.class);
+        final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/users", user, User.class);
 
         Assert.assertEquals(201, responseEntity.getStatusCodeValue());
         Assert.assertNotNull(responseEntity.getBody());
