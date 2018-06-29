@@ -1,29 +1,31 @@
-# MD101 - Step 5: Creating new users
+# MD101 - Step 5: Creating New Users
 
-In this step, we will get an introduction on what a _POST_ request is, in the context of _REST_. By the end of this lesson,
-you will be able to create new users for our service via _HTTP_ and _REST_.
+Currently, your `user-middle` application has functionality for retrieving users with a GET method. But right now there's no way to add a new user to the system (other than hard-coding one in your `UserService` class).
 
-## Introducing HTTP POST for creation
+In this step, you will get an introduction to the POST method in the context of REST. When you are finished with this step, you will be able to create new users in your service using HTTP and REST calls.
 
-### What is POST?
-_POST_ creates new resources. _POST_ must be used to create a new resource in a collection. The _POST_ request's body contains the suggested state representation of the new resource to be added to the server collection.
+_**Need to go back to the previous step?** In the Terminal, enter `git checkout step_4` and then refresh your browser._
 
-The _POST_ method is used to invoke the function-oriented controller resources. The _POST_ request may include both 
-the headers and a body as inputs to a controller resource's function. When the request is sent to the server, it is intercepted
-by the controller. The controller is in charge of curating as well as any transformation that is needed for the data being passed.
-In our exercise for the _UserController_ we are going to notice that the _ID_ property is not passes in the body of the _POST_
-request, but it is added inside the _createUser_ method.
+---
 
-This behavior can be seen in the following diagram:
+## Creating Data With POST
+
+While the GET method lets you retrieve information from a resource, the POST method lets you create _new_ resources. Unlike GET requests, POST requests are not idempotent and are considered "unsafe". That is, the outcome of a POST request is unpredictable and is not guaranteed to be repeatable without potentially undesirable side effects.
+
+In a RESTful service, the POST method must be used to create the new resource within a _collection_. The body of the POST request contains the suggested state representation of the new resource to be added to the collection on the server.
+
+Typically, the POST method is used to invoke function-oriented resources in a controller. The POST request can include headers and a body as inputs to the resource's function. When the request is sent to the server, the controller intercepts it. The controller is in charge of mapping requests as well as performing any transformation needed for the data being passed. The diagram below illustrates how the controller intercepts and handles POST requests.
+
+_**Want to learn more?** See the chapter resources for a quick refresher on understanding REST and HTTP methods._
+
 ![Rest Diagram](images/Post.png "HTTP REST Request")
 
-HTTP calls the _POST_ request method to be _unsafe_ and _non-idempotent_, which means that its outcome is unpredictable
-and not guaranteed to be repeatable without potentially undesirable side effects.
+### How Does POST Fit Into user-middle?
 
+In this step, you will create a new endpoint that uses the POST verb to create new users for your application. When you are done, you'll have an endpoint that looks something like the code block below.
 
-### How does it fit into user-middle?
+Notice how the `id` field is not passed in the body of the POST request. That's because you want the application assign an ID to users on creation, as opposed to the client specifying one. (You'll be adding a `createUser` method to do this.) The request also passed in every field, as none of them are considered optional. You will be enforcing this through request validation.
 
-We will be creating a new endpoint that uses the _POST_ verb to create new Users for our application. When we are done, we should have an endpoint that looks something like this:
 ```
 Request:
 HTTP POST /users
@@ -34,43 +36,50 @@ Response:
 {"id":"2", "firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1-1-1980"}
 ```
 
-#### A Few Things to Note
-Notice that we did _not_ pass an id field in the request. This is because we want our application to assign users an id, as opposed to the client specifying one on creation. We also passed every field, as none are considered optional. We will be enforcing this by way of request validation as well.
+---
 
+## Implementing POST Into user-middle
 
-## Implementing POST Into `user-middle`
+To implement a POST action into `user-middle`, you'll need to do several things:
 
-In order to implement a POST action into user-middle, we need to do several things:
-1. Implement a method in our UserService than can create users
-2. Create a new POST method in our UserController that can delegate to our UserService class, and respond accordingly.
-3. Create unit and integration tests to verify our new functionality
+1. Implement a method in `UserService` that can create users.
+2. Create a new POST method in `UserController` that can delegate to the `UserService` class and respond accordingly.
+3. Create unit and integration tests to verify your new functionality.
 
+### Start With Your Tests
 
-### Test Writing and TDD
-Now that we know what we need to implement, this is a great time to begin writing some unit and integration tests, and alter them as we work through the exercise. As mentioned before, this course will not strictly enforce TDD, though it is the recommended approach. If you wish to begin writing tests, we need to cover:
+Now that you know what you need to implement, this is a great time to begin writing some unit and integration tests. You can then modify them as you work through the exercise. As mentioned before, this course does not strictly enforce TDD (test-driven development), but writing tests first is definitely the recommended approach.
 
-**Unit Tests**
-- A test to verify creation of users in our UserService class
-- A test to verify the controller functionality, and resulting 201 response code
+Here's what your tests will need to cover:
 
-**Integration Test**
-- A test to verify that we can successfully create a user by way of RESTful HTTP, and retrieve it after creation
+* **Unit tests**
+  * A test to verify creation of users in the `UserService` class
+  * A test to verify the controller functionality and the resulting 201 response code
 
+* **Integration tests**
+  * A test to verify that you can successfully create a user by way of RESTful HTTP, and then retrieve it after creation
 
-We encourage you to start trying to write tests now as a means of verifying that the code you produce is doing what it should do. Regardless of when you choose to write tests, there are samples of these tests at the end of this step.
+Take a few minutes to start writing your tests now. This will help you to verify that the code you produce is doing what it should do. Regardless of when you choose to write tests, you can see examples of these tests at the end of this README, as well as in the end project in STS.
 
+### Modify the UserService
 
-### Modifying the UserService
+Right now the `UserService` class only has a method for retrieving users. You need to implement a new method that can create users. It should do the following things:
 
-First, we need to implement a method that can create Users in our UserService. It must do the following:
-1. Accept all the details of a User needed for creation as parameters
-2. Generate a unique id to assign to the new user
-3. Create the new user, and return it
+1. Accept as parameters all the details needed to create a user.
+2. Generate a unique `id` to assign to the new user.
+3. Create the new user and then return it.
 
-This offers a unique challenge due to how our User object is currently implemented. It is immutable, and offers no setters for setting an ID. In order to get around this, we decided to separate UserDetails from User. Our code looks like:
+#### Add a UserDetails Class
 
-UserDetails.java
+The requirements above present a unique challenge given how the `User` object is currently implemented. It is immutable, and therefore offers no setters for setting a user ID. To get around this, you're going to create a separate class for user details.
+
+Add a class called `UserDetails` in the `org.amdocs.elearning.user.middle.user` package within `src/main/java`. Then add the following code to **UserDetails.java**.
+
 ```
+package org.amdocs.elearning.user.middle.user;
+
+import java.time.LocalDate;
+
 public class UserDetails {
 
     protected String firstName;
@@ -84,8 +93,8 @@ public class UserDetails {
     
     
 
-    public UserDetails(@NotNull String firstName, @NotNull String lastName, @NotNull String middleInitial,
-            @NotNull UserType userType, @NotNull LocalDate dateOfBirth) {
+    public UserDetails(String firstName, String lastName, String middleInitial,
+            UserType userType, LocalDate dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleInitial = middleInitial;
@@ -116,7 +125,10 @@ public class UserDetails {
 }
 ```
 
-User.java
+#### Refactor the User Class
+
+Now refactor the `User` class by removing the user details and extending it as a subclass of your new `UserDetails` class. Here's how your **User.java** code should look.
+
 ```
 package org.amdocs.elearning.user.middle.user;
 
@@ -154,69 +166,139 @@ public class User extends UserDetails {
 }
 ```
 
-UserService.java -> createUser
+#### Add a createUser Method to UserService
+
+There's one last modification to make for this refactor. You need to add a new `createUser` method in `UserService`. Your **UserService.java** should look like the following.
+
 ```
+package org.amdocs.elearning.user.middle.user;
+
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class UserService {
+
+    private final List<User> users = new ArrayList<>();
+
+    public UserService(){
+        users.add(new User("0", "Smith", "Joe", "B", UserType.PATRON, LocalDate.parse("1980-01-01")));
+        users.add(new User("1", "Green", "Anne", "A", UserType.VENUE_OWNER, LocalDate.parse("1983-02-09")));
+    }
+
+
+    public Optional<User> getUserById(final String id){
+        return users.stream().filter(user -> user.getId().equals(id)).findFirst();
+    }
+
     public User createUser(final UserDetails userDetails){
-        final int newUserId = users.size();
-        final User newUser = new User(String.valueOf(newUserId), userDetails);
+    	final int newUserId = users.size();
+    	final User newUser = new User(String.valueOf(newUserId), userDetails);
         users.add(newUser);
         return newUser;
     }
+
+    public List<User> getAllUsers() {
+        return users;
+    }
+}
 ```
 
-#### What's going on here?
-As with anything in programming, there's many ways to do this. What we did was split our User object into two objects to logically separate a user's details from the user record that contains the id. We then have our service method accept only the user details, and return a full fledged User with an Id as it's output. Now we can wire this up to our controller.
+#### What Just Happened?
 
+As always with programming, there are a number of ways you could have approached this refactor. In this case, you split your `User` object into two objects to logically separate a user's details from the user record that contains the ID. Then you added a method to `UserService` that accepts the user details as input, and returns a full-fledged `User` with an `id` as output.
 
 ### Modifying the UserController
 
-In order to handle the _POST_ request. Our controller should:
-1. Implement a new mehtod marked with the `RequestMethod.POST` request mapping
-2. Accept a `UserDetails` object
-3. Delegate to the UserService's create method
-4. Return an HTTP 201(CREATED) with the created user on success
+Now that `UserService` is able to create a user, you can wire up this functionality to `UserController`. To be able to handle a POST request, the controller needs to do the following:
 
+1. Implement a new method marked with the `RequestMethod.POST` request mapping. (You'll need to import the Spring `RequestBody` annotation.)
+2. Accept a `UserDetails` object.
+3. Delegate to the `createUser` method in `UserService`.
+4. On success, return an HTTP 201 (Created) with the newly created user.
 
-Your code should look something like this:
+Your code for `UserController` should now look something like the following.
 
 ```
+package org.amdocs.elearning.user.middle.user;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
 
     @Autowired
     public UserController(final UserService userService){
         this.userService = userService;
     }
+
     
+    @RequestMapping(path="/{id}", method = RequestMethod.GET)
+    public ResponseEntity<User> getUser(@PathVariable final String id){
+
+        final Optional<User> userOptional = this.userService.getUserById(id);
+
+        if(userOptional.isPresent()){
+            return new ResponseEntity<User>(userOptional.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+    }
+
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody final UserDetails user){
+    
         final User createdUser = this.userService.createUser(user);
-        
         return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
     }
+
 }
+
 ```
 
-#### What's going on here?
-- We use `@RequestMapping` and `RequestMethod.POST` to tell Spring to map this method to an HTTP POST to /users
-- We use `@RequestBody` to tell Spring that we want to accept a request body that's represented by the UserDetails object. We're going to be sending JSON, and the serialization/deserialization is handled automatically by way of Spring and Jackson.
-- We accept the UserDetails object, and delegate to User service to create the user
-- We return an HTTP 201 on success. HTTP 201 signifies that an entity was created. We also return the newly created user as JSON
+#### What Just Happened?
 
+Your new method packs a lot into a few lines of code:
 
-One very important thing to notice is that, our controller is only acting as a broker. It only creates the interaction between the data that 
-is being passed in, and the business logic (in this case the _UserService_).
+* You use `@RequestMapping` and `RequestMethod.POST` to tell Spring to map this method to an HTTP POST to the `/users` endpoint.
+* You use `@RequestBody` to tell Spring that you want to accept a request body that's represented by the `UserDetails` object. The request is sent as JSON, and the serialization/deserialization is handled automatically by way of Spring and Jackson.
+- You accept the `UserDetails` object, and delegate creation of the user to `UserService`.
+- You return an HTTP 201 on success. HTTP 201 signifies that an entity was created. You also return the newly created user as JSON.
 
+One important thing to notice is that your controller is just acting as a broker here. It facilitates the interaction between the data that is being passed in and the business logic (in this case `UserService`).
+
+_**Want to learn more?** See the chapter resources for a video that demonstrates posting JSON to a Spring REST web service._
 
 ### Building and Running
-It's time to restart our server and see what we have built. From the terminal, re-run `mvn clean package` followed by `java -jar target/*.jar`. But how will we actually access our endpoint? We can't exactly use the browser as we could with a regular GET request without a fair amount of work and integration. For this exercise, we are going to use `cURL` - a command line utility for making HTTP requests. In a terminal window, once your server is running, run the following command:
+
+It's time to restart your server and see what you've built! In the Terminal, make sure you're in the **md101/sandbox/user-middle** directory. Then run the `mvn clean package` command followed by `java -jar target/*.jar` command.
+
+Your application is now running. But how will access your new endpoint? You can't exactly use a browser like you could with a regular GET request (at least not without a fair amount of work and integration with a front end). Luckily, there's another method. The cURL tool provides a command-line utility for making HTTP requests. You can use `curl` to test your endpoint.
+
+#### Create a User With cURL
+
+Leave the server running in one Terminal window, and open a new Terminal window. In the new Terminal, enter the following command.
+
 ```
 curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
 ```
 
-Your output should look something like:
+You should see output similar to the following.
+
 ```
 curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
 *   Trying 127.0.0.1...
@@ -238,7 +320,16 @@ curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json
 {"firstName":"test","lastName":"name","middleInitial":"a","userType":"PATRON","dateOfBirth":"1980-01-01","id":"2"}
 ```
 
-Now, we should be able to call an HTTP GET on /users/2 and get our user back. In cURL, this looks like:
+#### Retrieve a User With cURL
+
+Now that you've created a user, you should be able to call an HTTP GET on `/users/2` and get your user back. In the new Terminal window you opened, enter the following command.
+
+```
+curl -v "http://localhost:8080/users/2"
+```
+
+You should see output similar to the following.
+
 ```
 curl -v "http://localhost:8080/users/2"
 *   Trying 127.0.0.1...
@@ -257,33 +348,59 @@ curl -v "http://localhost:8080/users/2"
 {"firstName":"test","lastName":"name","middleInitial":"a","userType":"PATRON","dateOfBirth":"1980-01-01","id":"2"}
 ```
 
+---
 
-## Validating our request
-We can now create new users, but we still have ne issue. We should make sure consumers pass "good" data. In our case, this means no fields are left out. To do this, we will be utilizing Java Bean Validation.
+## Validating Requests
 
-Let's do the following:
-1. Add `javax.validation.constraints.NotNull` annotations to every field in the `UserDetails` class
-2. Add the `javax.validation.Valid` annotation to our POST method's `@ReqeustBody`
+Nice work! You can now create new users. But there's just one issue. You should make sure that consumers are passing good data to your service. For creating a user, this means making sure that no fields are left out. To accomplish this, you'll use Java Bean Validation.
 
-Your code should looks something like this:
+### Add @NotNull Annotations in UserDetails
 
-UserDetails fields:
-```
-    @NotNull
-    protected String firstName;
-    @NotNull
-    protected String lastName;
-    @NotNull
-    protected String middleInitial;
-    @NotNull
-    protected UserType userType;
-    @NotNull
-    protected LocalDate dateOfBirth;
+In the `UserDetails` class, import `javax.validation.constraints.NotNull`, and then add a `@NotNull` annotation to every field. The code block below shows how the changed portions of the class should look. The three dots (...) indicate unchanged code.
 
 ```
+import javax.validation.constraints.NotNull;
 
-UserController create method:
+public class UserDetails {
+
+	@NotNull
+	protected String firstName;
+	@NotNull
+	protected String lastName;
+	@NotNull
+	protected String middleInitial;
+	@NotNull
+	protected UserType userType;
+	@NotNull
+	protected LocalDate dateOfBirth;
+
+	public UserDetails() {
+	}
+	
+
+	public UserDetails(@NotNull String firstName, @NotNull String lastName, @NotNull String middleInitial,
+			@NotNull UserType userType, @NotNull LocalDate dateOfBirth) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.middleInitial = middleInitial;
+		this.userType = userType;
+		this.dateOfBirth = dateOfBirth;
+	}
+
+...
+
 ```
+
+### Add an @Valid Annotation in UserController
+
+In the `UserController` class, import the `javax.validation.Valid` annotation, and then add a `@Valid` annotation to your POST method's `@RequestBody`. The code block below shows how the changed portions of the class should look.
+
+```
+import javax.validation.Valid;
+import java.util.Optional;
+
+...
+
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody @Valid final UserDetails user){
 
@@ -292,7 +409,17 @@ UserController create method:
     }
 ```
 
-Now, let's rebuild and restart our server, and try the following cURL command:
+### Try Out Your Validation
+
+Now, see if your validation is working correctly. Switch back to the Terminal window where your server was running and stop it with **Ctrl+C**. Then rebuild the application with `mvn clean package` and run it with `java -jar target/*.jar`.
+
+After the application starts up, switch to another Terminal window and enter the following cURL command to try creating a user:
+
+```
+curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
+```
+
+Your output should look like the following.
 
 ```
 curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
@@ -316,27 +443,36 @@ curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json
 {"timestamp":"2018-06-14T16:30:24.847+0000","status":400,"error":"Bad Request","errors":[{"codes":["NotNull.userDetails.firstName","NotNull.firstName","NotNull.java.lang.String","NotNull"],"arguments":[{"codes":["userDetails.firstName","firstName"],"arguments":null,"defaultMessage":"firstName","code":"firstName"}],"defaultMessage":"must not be null","objectName":"userDetails","field":"firstName","rejectedValue":null,"bindingFailure":false,"code":"NotNull"}],"message":"Validation failed for object='userDetails'. Error count: 1","path":"/users"}
 ```
 
-### What just happened?
-Spring provides and implementation for the [JSR 303 spec](http://beanvalidation.org/1.0/spec/), which allows us to utilize the javax.validation annotations. By marking our fields with `@NotNull` and telling our request handler to use `@Valid`, we are saying that our `UserDetails` POJO *must* have no null fields. When we requested our resource with a missing firstName field, it resulted in an exception, which automatically mapped to an HTTP 400 (Bad Request).
+### What Just Happened?
 
+Spring provides an implementation for the JSR 303 specification. This specification lets you utilize the `javax.validation` annotations. By marking all fields with `@NotNull` and telling your request handler to use `@Valid`, you are saying that the `UserDetails` POJO must _not_ have any null fields.
 
-## Tests
-In previous chapters we got an introduction to unit and integration testing for our Spring application. In order to test our _POST_ action, 
-we are going to use the same dependencies and frameworks (_SpringBootTest, Mockito, JUnit_), if you are not familiar with the basic usage of those, please take a look at _step_4_.
+If you paid close attention, you noticed that the cURL above did not include the `firstName` field. Sending a request to the resource with a missing field resulted in an exception, which was automatically mapped to an HTTP 400 (Bad Request). In other words, the validation worked!
 
-In our previous exercise we implemented a test to validate a _GET_ action against our controller. We will now implement unit and integration test for our _POST_ action.
+_**Want to learn more?** See the chapter resources for a link to the full JSR 303 Bean Validation specification._
 
-The next step is to go ahead and write the unit test for the _POST_ action. This should be done inside our _UserControllerTest_ as well.
-The expected behavior should be as follows:
-* When given a valid user:
-    * The controller should return a `201` status code.
-    * The controller should return a response body similar to the user that was passed in, but adding an `id` property.
+---
 
-_UserControllerTest_
+## Writing POST Action Tests
+
+In the previous chapter, you learned how to write unit and integration tests to verify the behavior of your GET action. You can use the same dependencies (JUnit, Mockito, and SpringBootTest) to test your POST action.
+
+### Write a Controller Unit Test
+
+To test how `UserController` handles the POST action, write a unit test inside `UserControllerTest`. The test should verify the following expected behavior:
+
+* When given a valid user, the controller should:
+  * Return a 201 status code.
+  * Return a response body similar to the user that was passed in with the addition of an `id` property.
+
+The code block below shows how the changed portions of **UserControllerTest.java** should look. Notice how you are using Mockito to mock `UserService`, just as you did for the GET unit test.
+
 ```
 public class UserControllerTest {
     UserService userService = Mockito.mock(UserService.class);
     final UserController controller = new UserController(userService);
+    
+    ...
     
     @Test
     public void createUser(){
@@ -349,15 +485,32 @@ public class UserControllerTest {
         Assert.assertEquals(201, responseEntity.getStatusCodeValue());
         Assert.assertEquals(createdUser, responseEntity.getBody());
     }
-    
 }
-```
-
-_UserServiceTest_
 
 ```
+
+### Write a Service Unit Test
+
+Now add a unit test for `UserService` inside `UserServiceTest`, and add assertions to verify that the `createUser` method successfully created a user as expected.
+
+The code block below shows how the changed portions of **UserServiceTest.java** should look. Notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`.
+
+```
+import org.amdocs.elearning.user.middle.user.User;
+import org.amdocs.elearning.user.middle.user.UserDetails;
+import org.amdocs.elearning.user.middle.user.UserService;
+import org.amdocs.elearning.user.middle.user.UserType;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
 public class UserServiceTest {
+
     final UserService userService = new UserService();
+    
+    ...
 
     @Test
     public void testCreateUser(){
@@ -371,45 +524,84 @@ public class UserServiceTest {
 }
 ```
 
-_UserIntegrationTest_
+### Write an Integration Test
+
+Finally, add an integration test to `UserIntegrationTest` to verify that the POST action is working correctly across all classes in your application.
+
+The code block below shows how the changed portions of **UserIntegrationTest.java** should look. Again, notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`.
+
 ```
+import org.amdocs.elearning.user.middle.user.User;
+import org.amdocs.elearning.user.middle.user.UserDetails;
+import org.amdocs.elearning.user.middle.user.UserType;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.time.LocalDate;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserIntegrationTest {
+
     @LocalServerPort
     private int port;
-    
+
     @Autowired
     private TestRestTemplate restTemplate;
     
+    ...
+    
     @Test
     public void createUser() throws Exception {
+
         final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
         final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/users", user, User.class);
-    
+
         Assert.assertEquals(201, responseEntity.getStatusCodeValue());
-        Assert.assertNotNull(responseEntity.getBody()); 
+        Assert.assertNotNull(responseEntity.getBody());
     }
 }
 ```
 
-## Building and running
-First, we have to re-package our application by running `mvn clean verify` in our home directory (_`user-middle/`_).
-At this point, if we go through the logs, we should see something similar to:
+### Build and Run Your Tests
 
-_Passing Tests_
+Go ahead and try running your tests. If you haven't already, stop your server with **Ctrl+C** in the Terminal window where its running.
+
+Make sure you're still in the root directory of the project (**md101/sandbox/user-middle). Then repackage the application with the `mvn clean verify` command. If all goes well, you should see output similar to the screenshots below.
+
+
+_Tests Running_
 
 ![Unit Tests](images/PassingTests.png "Unit Test")
+
+_Tests Passed_
+
 ![Integration Tests](images/integration.png "Integration Test")
 
-_Successful Build_
+Build Successful
 
 ![Successful Build](images/success.png "Successful Build")
 
+---
 
 ## Summary
-On this step, you walked through the process on how to create new users via HTTP POST. You were able to see the flow of the 
-HTTP request, implement unit and integration tests, and successfully run our application.
 
-Up to this point we are able to create new users as well as retrieve existing users from our service. In the next step you will
-learn how to update existing users.
+In this step, you implemented functionality for creating new users with an HTTP POST request. You followed the flow of the HTTP request with cURL commands, implemented unit and integration tests, and successfully ran your application.
 
-When you are ready, `git checkout step_6`
+At this point, you are able to create new users as well as retrieve existing users from your service. In the next step you'll take things further by adding the ability update existing users.
+
+### Go to Step 6
+
+Ready to go to the Step 6 branch?
+
+1. In the Terminal, make sure you are in the **md101** directory.
+2. Enter the following command: `git checkout step_6`
+3. In STS, right-click the **end** project and select **Refresh** to make sure you're viewing the end state for Step 6.
+4. Refresh your browser (press **F5**) to see the README for Step 6.
