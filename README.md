@@ -16,7 +16,7 @@ In a RESTful service, the POST method must be used to create the new resource wi
 
 Typically, the POST method is used to invoke function-oriented resources in a controller. The POST request can include headers and a body as inputs to the resource's function. When the request is sent to the server, the controller intercepts it. The controller is in charge of mapping requests as well as performing any transformation needed for the data being passed. The diagram below illustrates how the controller intercepts and handles POST requests.
 
-_**Want to learn more?** See the chapter resources for a quick refresher on understanding REST and HTTP methods._
+_**Want to learn more?** See the chapter introduction for a quick refresher on understanding REST and HTTP methods._
 
 ![Rest Diagram](images/Post.png "HTTP REST Request")
 
@@ -281,7 +281,7 @@ Your new method packs a lot into a few lines of code:
 
 One important thing to notice is that your controller is just acting as a broker here. It facilitates the interaction between the data that is being passed in and the business logic (in this case `UserService`).
 
-_**Want to learn more?** See the chapter resources for a video that demonstrates posting JSON to a Spring REST web service._
+_**Want to learn more?** See the chapter introduction for a video that demonstrates posting JSON to a Spring REST web service._
 
 ### Building and Running
 
@@ -449,7 +449,7 @@ Spring provides an implementation for the JSR 303 specification. This specificat
 
 If you paid close attention, you noticed that the cURL above did not include the `firstName` field. Sending a request to the resource with a missing field resulted in an exception, which was automatically mapped to an HTTP 400 (Bad Request). In other words, the validation worked!
 
-_**Want to learn more?** See the chapter resources for a link to the full JSR 303 Bean Validation specification._
+_**Want to learn more?** See the chapter introduction for a link to the full JSR 303 Bean Validation specification._
 
 ---
 
