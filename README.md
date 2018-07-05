@@ -275,7 +275,7 @@ public class UserController {
 Your new method packs a lot into a few lines of code:
 
 * You use `@RequestMapping` and `RequestMethod.POST` to tell Spring to map this method to an HTTP POST to the `/users` endpoint.
-* You use `@RequestBody` to tell Spring that you want to accept a request body that's represented by the `UserDetails` object. The request is sent as JSON, and the serialization/deserialization is handled automatically by way of Spring and Jackson.
+* You use `@RequestBody` to tell Spring that you want to accept a request body that's represented by the `UserDetails` object. The request is sent as JSON, and the serialization/deserialization is handled automatically by way of Jackson--a JSON parsing library used by Spring.
 - You accept the `UserDetails` object, and delegate creation of the user to `UserService`.
 - You return an HTTP 201 on success. HTTP 201 signifies that an entity was created. You also return the newly created user as JSON.
 
