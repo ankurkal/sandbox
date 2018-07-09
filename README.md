@@ -356,7 +356,7 @@ Nice work! You can now create new users. But there's just one issue. You should 
 
 ### Add @NotNull Annotations in UserDetails
 
-In the `UserDetails` class, import `javax.validation.constraints.NotNull`, and then add a `@NotNull` annotation to every field. The code block below shows how the changed portions of the class should look. The three dots (...) indicate unchanged code.
+In the `UserDetails` class, import `javax.validation.constraints.NotNull`, and then add a `@NotNull` annotation to every field. The code block below shows how the changed portions of the class should look. (See the end project in STS for the complete code.)
 
 ```
 import javax.validation.constraints.NotNull;
@@ -387,19 +387,18 @@ public class UserDetails {
 		this.dateOfBirth = dateOfBirth;
 	}
 
-...
-
 ```
 
 ### Add an @Valid Annotation in UserController
 
-In the `UserController` class, import the `javax.validation.Valid` annotation, and then add a `@Valid` annotation to your POST method's `@RequestBody`. The code block below shows how the changed portions of the class should look.
+In the `UserController` class, import the `javax.validation.Valid` annotation, and then add a `@Valid` annotation to your POST method's `@RequestBody`. The code block below shows how the changed portions of the class should look. (See the end project in STS for the complete code.)
 
 ```
 import javax.validation.Valid;
 import java.util.Optional;
 
-...
+
+
 
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<User> createUser(@RequestBody @Valid final UserDetails user){
@@ -465,14 +464,15 @@ To test how `UserController` handles the POST action, write a unit test inside `
   * Return a 201 status code.
   * Return a response body similar to the user that was passed in with the addition of an `id` property.
 
-The code block below shows how the changed portions of **UserControllerTest.java** should look. Notice how you are using Mockito to mock `UserService`, just as you did for the GET unit test.
+The code block below shows how the changed portions of **UserControllerTest.java** should look. Notice how you are using Mockito to mock `UserService`, just as you did for the GET unit test. (See the end project in STS for the complete code.)
 
 ```
 public class UserControllerTest {
     UserService userService = Mockito.mock(UserService.class);
     final UserController controller = new UserController(userService);
     
-    ...
+
+
     
     @Test
     public void createUser(){
@@ -493,7 +493,7 @@ public class UserControllerTest {
 
 Now add a unit test for `UserService` inside `UserServiceTest`, and add assertions to verify that the `createUser` method successfully created a user as expected.
 
-The code block below shows how the changed portions of **UserServiceTest.java** should look. Notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`.
+The code block below shows how the changed portions of **UserServiceTest.java** should look. Notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`. (See the end project in STS for the complete code.)
 
 ```
 import org.amdocs.elearning.user.middle.user.User;
@@ -510,7 +510,8 @@ public class UserServiceTest {
 
     final UserService userService = new UserService();
     
-    ...
+
+
 
     @Test
     public void testCreateUser(){
@@ -528,7 +529,7 @@ public class UserServiceTest {
 
 Finally, add an integration test to `UserIntegrationTest` to verify that the POST action is working correctly across all classes in your application.
 
-The code block below shows how the changed portions of **UserIntegrationTest.java** should look. Again, notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`.
+The code block below shows how the changed portions of **UserIntegrationTest.java** should look. Again, notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`. (See the end project in STS for the complete code.)
 
 ```
 import org.amdocs.elearning.user.middle.user.User;
@@ -556,7 +557,8 @@ public class UserIntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
     
-    ...
+
+
     
     @Test
     public void createUser() throws Exception {
