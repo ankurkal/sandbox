@@ -17,14 +17,14 @@ public class UserServiceTest {
     final UserService userService = new UserService();
 
     @Test
-    public void testGetUser_Match(){
+    public void getUser_Match(){
         final Optional<User> user = userService.getUserById("0");
 
         Assert.assertEquals(true, user.isPresent());
     }
 
     @Test
-    public void testGetUser_NoMatch(){
+    public void getUser_NoMatch(){
         final Optional<User> user = userService.getUserById("not a real id");
 
         Assert.assertEquals(false, user.isPresent());
