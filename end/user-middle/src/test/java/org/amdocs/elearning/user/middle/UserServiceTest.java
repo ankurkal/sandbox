@@ -31,7 +31,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateUser(){
+    public void createUser(){
         final UserDetails newUser = new UserDetails("new first", "new last", "M", UserType.PATRON, LocalDate.now());
         final User createdUser = userService.createUser(newUser);
         final Optional<User> retrievedUser = userService.getUserById(createdUser.getId());
