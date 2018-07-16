@@ -1,5 +1,6 @@
 package org.amdocs.elearning.user.middle;
 
+import java.time.LocalDate;
 
 import org.amdocs.elearning.user.middle.user.User;
 import org.amdocs.elearning.user.middle.user.UserDetails;
@@ -14,41 +15,40 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserIntegrationTest {
 
+	@LocalServerPort
+	private int port;
 
+	@Autowired
+	private TestRestTemplate restTemplate;
 
-    @LocalServerPort
-    private int port;
+	@Test
+	public void getUserById_Match() throws Exception {
+		final ResponseEntity<User> responseEntity = this.restTemplate
+				.getForEntity("http://localhost:" + port + "/users/0", User.class);
+		Assert.assertEquals(200, responseEntity.getStatusCodeValue());
+		Assert.assertNotNull(responseEntity.getBody());
+	}
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+	@Test
+	public void getUserById_NoMatch() throws Exception {
+		final ResponseEntity<User> responseEntity = this.restTemplate
+				.getForEntity("http://localhost:" + port + "/users/abc", User.class);
+		Assert.assertEquals(404, responseEntity.getStatusCodeValue());
+		Assert.assertNull(responseEntity.getBody());
+	}
 
-    @Test
-    public void getUserById_Match() throws Exception {
-        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/users/0", User.class);
-        Assert.assertEquals(200, responseEntity.getStatusCodeValue());
-        Assert.assertNotNull(responseEntity.getBody());
-    }
+	@Test
+	public void createUser() throws Exception {
 
-    @Test
-    public void getUserById_NoMatch() throws Exception {
-        final ResponseEntity<User> responseEntity = this.restTemplate.getForEntity("http://localhost:" + port + "/users/abc", User.class);
-        Assert.assertEquals(404, responseEntity.getStatusCodeValue());
-        Assert.assertNull(responseEntity.getBody());
-    }
+		final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
+		final ResponseEntity<User> responseEntity = this.restTemplate
+				.postForEntity("http://localhost:" + port + "/users", user, User.class);
 
-    @Test
-    public void createUser() throws Exception {
-
-        final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
-        final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/users", user, User.class);
-
-        Assert.assertEquals(201, responseEntity.getStatusCodeValue());
-        Assert.assertNotNull(responseEntity.getBody());
-    }
+		Assert.assertEquals(201, responseEntity.getStatusCodeValue());
+		Assert.assertNotNull(responseEntity.getBody());
+	}
 }

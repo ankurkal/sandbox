@@ -19,8 +19,6 @@ public class UserDetails {
 
 	public UserDetails() {
 	}
-	
-	
 
 	public UserDetails(@NotNull String firstName, @NotNull String lastName, @NotNull String middleInitial,
 			@NotNull UserType userType, @NotNull LocalDate dateOfBirth) {
@@ -32,23 +30,23 @@ public class UserDetails {
 	}
 
 	public String getFirstName() {
-	    return firstName;
+		return firstName;
 	}
 
 	public String getLastName() {
-	    return lastName;
+		return lastName;
 	}
 
 	public String getMiddleInitial() {
-	    return middleInitial;
+		return middleInitial;
 	}
 
 	public UserType getUserType() {
-	    return userType;
+		return userType;
 	}
 
 	public LocalDate getDateOfBirth() {
-	    return dateOfBirth;
+		return dateOfBirth;
 	}
 
 }
