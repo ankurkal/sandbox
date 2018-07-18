@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import org.amdocs.elearning.user.middle.user.User;
+import org.amdocs.elearning.user.middle.user.UserDetails;
 import org.amdocs.elearning.user.middle.user.UserController;
 import org.amdocs.elearning.user.middle.user.UserService;
 import org.amdocs.elearning.user.middle.user.UserType;
@@ -40,7 +41,7 @@ public class UserControllerTest {
 
 	@Test
 	public void createUser() {
-		final User createRequestUser = new User(null, "test", "test", "t", UserType.PATRON, LocalDate.now());
+		final UserDetails createRequestUser = new UserDetails("test", "test", "t", UserType.PATRON, LocalDate.now());
 		final User createdUser = new User("1", "test", "test", "t", UserType.PATRON, LocalDate.now());
 
 		Mockito.when(userService.createUser(Mockito.any())).thenReturn(createdUser);
