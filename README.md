@@ -1,6 +1,6 @@
 # MD101 - Step 5: Creating New Users
 
-Currently, your `user-middle` application has functionality for retrieving users with a GET method. But right now there's no way to add a new user to the system (other than hard-coding one in your `UserService` class).
+Currently, your **user-middle** application has functionality for retrieving users with a GET method. But right now there's no way to add a new user to the system (other than hard-coding one in your `UserService` class).
 
 In this step, you will get an introduction to the POST method in the context of REST. When you are finished with this step, you will be able to create new users in your service using HTTP and REST calls.
 
@@ -15,8 +15,6 @@ While the GET method lets you retrieve information from a resource, the POST met
 In a RESTful service, the POST method must be used to create the new resource within a _collection_. The body of the POST request contains the suggested state representation of the new resource to be added to the collection on the server.
 
 Typically, the POST method is used to invoke function-oriented resources in a controller. The POST request can include headers and a body as inputs to the resource's function. When the request is sent to the server, the controller intercepts it. The controller is in charge of mapping requests as well as performing any transformation needed for the data being passed. The diagram below illustrates how the controller intercepts and handles POST requests.
-
-_**Want to learn more?** See the chapter introduction for a quick refresher on understanding REST and HTTP methods._
 
 ![Rest Diagram](images/Post.png "HTTP REST Request")
 
@@ -40,7 +38,7 @@ Response:
 
 ## Implementing POST Into user-middle
 
-To implement a POST action into `user-middle`, you'll need to do several things:
+To implement a POST action into **user-middle**, you'll need to do several things:
 
 1. Implement a method in `UserService` that can create users.
 2. Create a new POST method in `UserController` that can delegate to the `UserService` class and respond accordingly.
@@ -59,7 +57,7 @@ Here's what your tests will need to cover:
 * **Integration tests**
   * A test to verify that you can successfully create a user by way of RESTful HTTP, and then retrieve it after creation
 
-Take a few minutes to start writing your tests now. This will help you to verify that the code you produce is doing what it should do. Regardless of when you choose to write tests, you can see examples of these tests at the end of this README, as well as in the end project in STS.
+Take a few minutes to start writing your tests now. This will help you to verify that the code you produce is doing what it should do. Regardless of when you choose to write tests, you can see examples of these tests at the end of this README, as well as in the **end** project in STS.
 
 ### Modify the UserService
 
@@ -75,52 +73,50 @@ The requirements above present a unique challenge given how the `User` object is
 
 Add a class called `UserDetails` in the `org.amdocs.elearning.user.middle.user` package within `src/main/java`. Then add the following code to **UserDetails.java**.
 
-```
+```java
 package org.amdocs.elearning.user.middle.user;
 
 import java.time.LocalDate;
 
 public class UserDetails {
 
-    protected String firstName;
-    protected String lastName;
-    protected String middleInitial;
-    protected UserType userType;
-    protected LocalDate dateOfBirth;
+	protected String firstName;
+	protected String lastName;
+	protected String middleInitial;
+	protected UserType userType;
+	protected LocalDate dateOfBirth;
 
-    public UserDetails() {
-    }
-    
-    
+	public UserDetails() {
+	}
 
-    public UserDetails(String firstName, String lastName, String middleInitial,
-            UserType userType, LocalDate dateOfBirth) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleInitial = middleInitial;
-        this.userType = userType;
-        this.dateOfBirth = dateOfBirth;
-    }
+	public UserDetails(String firstName, String lastName, String middleInitial,
+			UserType userType, LocalDate dateOfBirth) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.middleInitial = middleInitial;
+		this.userType = userType;
+		this.dateOfBirth = dateOfBirth;
+	}
 
-    public String getFirstName() {
-        return firstName;
-    }
+	public String getFirstName() {
+		return firstName;
+	}
 
-    public String getLastName() {
-        return lastName;
-    }
+	public String getLastName() {
+		return lastName;
+	}
 
-    public String getMiddleInitial() {
-        return middleInitial;
-    }
+	public String getMiddleInitial() {
+		return middleInitial;
+	}
 
-    public UserType getUserType() {
-        return userType;
-    }
+	public UserType getUserType() {
+		return userType;
+	}
 
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
+	public LocalDate getDateOfBirth() {
+		return dateOfBirth;
+	}
 
 }
 ```
@@ -129,40 +125,41 @@ public class UserDetails {
 
 Now refactor the `User` class by removing the user details and extending it as a subclass of your new `UserDetails` class. Here's how your **User.java** code should look.
 
-```
+```java
 package org.amdocs.elearning.user.middle.user;
 
 import java.time.LocalDate;
 
 public class User extends UserDetails {
 
-    private String id;
-    
-    public User(){
+	private String id;
 
-    }
-    
-    public User(final String id, final UserDetails details){
-        this.id = id;
-        this.firstName = details.getFirstName();
-        this.lastName = details.getLastName();
-        this.middleInitial = details.getMiddleInitial();
-        this.userType = details.getUserType();
-        this.dateOfBirth = details.getDateOfBirth();
-    }
+	public User() {
 
-    public User(String id, String firstName, String lastName, String middleInitial, UserType userType, LocalDate dateOfBirth) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleInitial = middleInitial;
-        this.userType = userType;
-        this.dateOfBirth = dateOfBirth;
-    }
+	}
 
-    public String getId() {
-        return id;
-    }
+	public User(final String id, final UserDetails details) {
+		this.id = id;
+		this.firstName = details.getFirstName();
+		this.lastName = details.getLastName();
+		this.middleInitial = details.getMiddleInitial();
+		this.userType = details.getUserType();
+		this.dateOfBirth = details.getDateOfBirth();
+	}
+
+	public User(String id, String firstName, String lastName, String middleInitial, UserType userType,
+			LocalDate dateOfBirth) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.middleInitial = middleInitial;
+		this.userType = userType;
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getId() {
+		return id;
+	}
 }
 ```
 
@@ -170,9 +167,8 @@ public class User extends UserDetails {
 
 There's one last modification to make for this refactor. You need to add a new `createUser` method in `UserService`. Your **UserService.java** should look like the following.
 
-```
+```java
 package org.amdocs.elearning.user.middle.user;
-
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -181,28 +177,27 @@ import java.util.Optional;
 
 public class UserService {
 
-    private final List<User> users = new ArrayList<>();
+	private final List<User> users = new ArrayList<>();
 
-    public UserService(){
-        users.add(new User("0", "Smith", "Joe", "B", UserType.PATRON, LocalDate.parse("1980-01-01")));
-        users.add(new User("1", "Green", "Anne", "A", UserType.VENUE_OWNER, LocalDate.parse("1983-02-09")));
-    }
+	public UserService() {
+		users.add(new User("0", "Smith", "Joe", "B", UserType.PATRON, LocalDate.parse("1980-01-01")));
+		users.add(new User("1", "Green", "Anne", "A", UserType.VENUE_OWNER, LocalDate.parse("1983-02-09")));
+	}
 
+	public Optional<User> getUserById(final String id) {
+		return users.stream().filter(user -> user.getId().equals(id)).findFirst();
+	}
 
-    public Optional<User> getUserById(final String id){
-        return users.stream().filter(user -> user.getId().equals(id)).findFirst();
-    }
+	public User createUser(final UserDetails userDetails) {
+		final int newUserId = users.size();
+		final User newUser = new User(String.valueOf(newUserId), userDetails);
+		users.add(newUser);
+		return newUser;
+	}
 
-    public User createUser(final UserDetails userDetails){
-    	final int newUserId = users.size();
-    	final User newUser = new User(String.valueOf(newUserId), userDetails);
-        users.add(newUser);
-        return newUser;
-    }
-
-    public List<User> getAllUsers() {
-        return users;
-    }
+	public List<User> getAllUsers() {
+		return users;
+	}
 }
 ```
 
@@ -221,8 +216,10 @@ Now that `UserService` is able to create a user, you can wire up this functional
 
 Your code for `UserController` should now look something like the following.
 
-```
+```java
 package org.amdocs.elearning.user.middle.user;
+
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -233,41 +230,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    @Autowired
-    public UserController(final UserService userService){
-        this.userService = userService;
-    }
+	@Autowired
+	public UserController(final UserService userService) {
+		this.userService = userService;
+	}
 
-    
-    @RequestMapping(path="/{id}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUser(@PathVariable final String id){
+	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity<User> getUser(@PathVariable final String id) {
 
-        final Optional<User> userOptional = this.userService.getUserById(id);
+		final Optional<User> userOptional = this.userService.getUserById(id);
 
-        if(userOptional.isPresent()){
-            return new ResponseEntity<User>(userOptional.get(), HttpStatus.OK);
-        }
+		if (userOptional.isPresent()) {
+			return new ResponseEntity<User>(userOptional.get(), HttpStatus.OK);
+		}
 
-        return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-    }
+		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	}
 
-    @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<User> createUser(@RequestBody final UserDetails user){
-    
-        final User createdUser = this.userService.createUser(user);
-        return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
-    }
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<User> createUser(@RequestBody final UserDetails user) {
+
+		final User createdUser = this.userService.createUser(user);
+		return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
+	}
 
 }
-
 ```
 
 #### What Just Happened?
@@ -281,8 +274,6 @@ Your new method packs a lot into a few lines of code:
 
 One important thing to notice is that your controller is just acting as a broker here. It facilitates the interaction between the data that is being passed in and the business logic (in this case `UserService`).
 
-_**Want to learn more?** See the chapter introduction for a video that demonstrates posting JSON to a Spring REST web service._
-
 ### Building and Running
 
 It's time to restart your server and see what you've built! In the Terminal, make sure you're in the **md101/sandbox/user-middle** directory. Then run the `mvn clean package` command followed by `java -jar target/*.jar` command.
@@ -291,7 +282,7 @@ Your application is now running. But how will access your new endpoint? You can'
 
 #### Create a User With cURL
 
-Leave the server running in one Terminal window, and open a new Terminal window. In the new Terminal, enter the following command.
+Leave the server running in one Terminal window, and open a new Terminal window. (Quickly open a new tab in Terminal with **SHIFT+CTRL+TAB**.) In the new Terminal, enter the following command.
 
 ```
 curl -v -X POST "http://localhost:8080/users" -H "Content-Type: application/json" -d '{"firstName":"test", "lastName":"name", "middleInitial":"a", "userType":"PATRON", "dateOfBirth":"1980-01-01"}'
@@ -356,9 +347,9 @@ Nice work! You can now create new users. But there's just one issue. You should 
 
 ### Add @NotNull Annotations in UserDetails
 
-In the `UserDetails` class, import `javax.validation.constraints.NotNull`, and then add a `@NotNull` annotation to every field. The code block below shows how the changed portions of the class should look. (See the end project in STS for the complete code.)
+In the `UserDetails` class, import `javax.validation.constraints.NotNull`, and then add a `@NotNull` annotation to every field. The code block below shows how the changed portions of the class should look. (See the **end** project in STS for the complete code.)
 
-```
+```java
 import javax.validation.constraints.NotNull;
 
 public class UserDetails {
@@ -376,7 +367,6 @@ public class UserDetails {
 
 	public UserDetails() {
 	}
-	
 
 	public UserDetails(@NotNull String firstName, @NotNull String lastName, @NotNull String middleInitial,
 			@NotNull UserType userType, @NotNull LocalDate dateOfBirth) {
@@ -391,26 +381,23 @@ public class UserDetails {
 
 ### Add an @Valid Annotation in UserController
 
-In the `UserController` class, import the `javax.validation.Valid` annotation, and then add a `@Valid` annotation to your POST method's `@RequestBody`. The code block below shows how the changed portions of the class should look. (See the end project in STS for the complete code.)
+In the `UserController` class, import the `javax.validation.Valid` annotation, and then add a `@Valid` annotation to your POST method's `@RequestBody`. The code block below shows how the changed portions of the class should look. (See the **end** project in STS for the complete code.)
 
-```
+```java
 import javax.validation.Valid;
-import java.util.Optional;
 
 
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<User> createUser(@RequestBody @Valid final UserDetails user) {
 
-
-    @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<User> createUser(@RequestBody @Valid final UserDetails user){
-
-        final User createdUser = this.userService.createUser(user);
-        return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
-    }
+		final User createdUser = this.userService.createUser(user);
+		return new ResponseEntity<User>(createdUser, HttpStatus.CREATED);
+	}
 ```
 
 ### Try Out Your Validation
 
-Now, see if your validation is working correctly. Switch back to the Terminal window where your server was running and stop it with **Ctrl+C**. Then rebuild the application with `mvn clean package` and run it with `java -jar target/*.jar`.
+Now, see if your validation is working correctly. Switch back to the Terminal window where your server was running and stop it with **CTRL+C**. Then rebuild the application with `mvn clean package` and run it with `java -jar target/*.jar`.
 
 After the application starts up, switch to another Terminal window and enter the following cURL command to try creating a user:
 
@@ -448,8 +435,6 @@ Spring provides an implementation for the JSR 303 specification. This specificat
 
 If you paid close attention, you noticed that the cURL above did not include the `firstName` field. Sending a request to the resource with a missing field resulted in an exception, which was automatically mapped to an HTTP 400 (Bad Request). In other words, the validation worked!
 
-_**Want to learn more?** See the chapter introduction for a link to the full JSR 303 Bean Validation specification._
-
 ---
 
 ## Writing POST Action Tests
@@ -464,38 +449,39 @@ To test how `UserController` handles the POST action, write a unit test inside `
   * Return a 201 status code.
   * Return a response body similar to the user that was passed in with the addition of an `id` property.
 
-The code block below shows how the changed portions of **UserControllerTest.java** should look. Notice how you are using Mockito to mock `UserService`, just as you did for the GET unit test. (See the end project in STS for the complete code.)
+The code block below shows how the changed portions of **UserControllerTest.java** should look. Notice how you are using Mockito to mock `UserService`, just as you did for the GET unit test. (See the **end** project in STS for the complete code.)
 
-```
+```java
 public class UserControllerTest {
-    UserService userService = Mockito.mock(UserService.class);
-    final UserController controller = new UserController(userService);
+
+	UserService userService = Mockito.mock(UserService.class);
+	final UserController controller = new UserController(userService);
     
-
-
+                                 
     
-    @Test
-    public void createUser(){
-        final User createRequestUser = new User(null, "test", "test", "t", UserType.PATRON, LocalDate.now());
-        final User createdUser = new User("1", "test", "test", "t", UserType.PATRON, LocalDate.now());
+	@Test
+	public void createUser() {
+		final UserDetails createRequestUser = new UserDetails("test", "test", "t", UserType.PATRON, LocalDate.now());
+		final User createdUser = new User("1", "test", "test", "t", UserType.PATRON, LocalDate.now());
 
-        Mockito.when(userService.createUser(Mockito.any())).thenReturn(createdUser);
-        final ResponseEntity<User> responseEntity = this.controller.createUser(createRequestUser);
+		Mockito.when(userService.createUser(Mockito.any())).thenReturn(createdUser);
+		final ResponseEntity<User> responseEntity = this.controller.createUser(createRequestUser);
 
-        Assert.assertEquals(201, responseEntity.getStatusCodeValue());
-        Assert.assertEquals(createdUser, responseEntity.getBody());
-    }
-}
-
+		Assert.assertEquals(201, responseEntity.getStatusCodeValue());
+		Assert.assertEquals(createdUser, responseEntity.getBody());
+	}
 ```
 
 ### Write a Service Unit Test
 
 Now add a unit test for `UserService` inside `UserServiceTest`, and add assertions to verify that the `createUser` method successfully created a user as expected.
 
-The code block below shows how the changed portions of **UserServiceTest.java** should look. Notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`. (See the end project in STS for the complete code.)
+The code block below shows how the changed portions of **UserServiceTest.java** should look. Notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`. (See the **end** project in STS for the complete code.)
 
-```
+```java
+import java.time.LocalDate;
+import java.util.Optional;
+
 import org.amdocs.elearning.user.middle.user.User;
 import org.amdocs.elearning.user.middle.user.UserDetails;
 import org.amdocs.elearning.user.middle.user.UserService;
@@ -503,25 +489,21 @@ import org.amdocs.elearning.user.middle.user.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
 public class UserServiceTest {
 
-    final UserService userService = new UserService();
+	final UserService userService = new UserService();
     
+                              
 
+	@Test
+	public void createUser() {
+		final UserDetails newUser = new UserDetails("new first", "new last", "M", UserType.PATRON, LocalDate.now());
+		final User createdUser = userService.createUser(newUser);
+		final Optional<User> retrievedUser = userService.getUserById(createdUser.getId());
 
-
-    @Test
-    public void testCreateUser(){
-        final UserDetails newUser = new UserDetails("new first", "new last", "M", UserType.PATRON, LocalDate.now());
-        final User createdUser = userService.createUser(newUser);
-        final Optional<User> retrievedUser = userService.getUserById(createdUser.getId());
-
-        Assert.assertTrue(retrievedUser.isPresent());
-        Assert.assertEquals(createdUser, retrievedUser.get());
-    }
+		Assert.assertTrue(retrievedUser.isPresent());
+		Assert.assertEquals(createdUser, retrievedUser.get());
+	}
 }
 ```
 
@@ -529,9 +511,11 @@ public class UserServiceTest {
 
 Finally, add an integration test to `UserIntegrationTest` to verify that the POST action is working correctly across all classes in your application.
 
-The code block below shows how the changed portions of **UserIntegrationTest.java** should look. Again, notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`. (See the end project in STS for the complete code.)
+The code block below shows how the changed portions of **UserIntegrationTest.java** should look. Again, notice the new import statements for `UserDetails`,  `UserType`, and `LocalDate`. (See the **end** project in STS for the complete code.)
 
-```
+```java
+import java.time.LocalDate;
+
 import org.amdocs.elearning.user.middle.user.User;
 import org.amdocs.elearning.user.middle.user.UserDetails;
 import org.amdocs.elearning.user.middle.user.UserType;
@@ -545,38 +529,36 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDate;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserIntegrationTest {
 
-    @LocalServerPort
-    private int port;
+	@LocalServerPort
+	private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+	@Autowired
+	private TestRestTemplate restTemplate;
     
 
-
     
-    @Test
-    public void createUser() throws Exception {
+	@Test
+	public void createUser() throws Exception {
 
-        final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
-        final ResponseEntity<User> responseEntity = this.restTemplate.postForEntity("http://localhost:" + port + "/users", user, User.class);
+		final UserDetails user = new User(null, "firstName", "lastName", "M", UserType.PATRON, LocalDate.now());
+		final ResponseEntity<User> responseEntity = this.restTemplate
+				.postForEntity("http://localhost:" + port + "/users", user, User.class);
 
-        Assert.assertEquals(201, responseEntity.getStatusCodeValue());
-        Assert.assertNotNull(responseEntity.getBody());
-    }
+		Assert.assertEquals(201, responseEntity.getStatusCodeValue());
+		Assert.assertNotNull(responseEntity.getBody());
+	}
 }
 ```
 
 ### Build and Run Your Tests
 
-Go ahead and try running your tests. If you haven't already, stop your server with **Ctrl+C** in the Terminal window where its running.
+Go ahead and try running your tests. If you haven't already, stop your server with **CTRL+C** in the Terminal window where its running.
 
-Make sure you're still in the root directory of the project (**md101/sandbox/user-middle). Then repackage the application with the `mvn clean verify` command. If all goes well, you should see output similar to the screenshots below.
+Make sure you're still in the root directory of the project (**md101/sandbox/user-middle**). Then repackage the application with the `mvn clean verify` command. If all goes well, you should see output similar to the screenshots below.
 
 
 _Tests Running_
@@ -599,11 +581,13 @@ In this step, you implemented functionality for creating new users with an HTTP 
 
 At this point, you are able to create new users as well as retrieve existing users from your service. In the next step you'll take things further by adding the ability update existing users.
 
+_**Want to learn more?** See the "Dive Deeper" section in the chapter introduction (Jam page) for links to articles and videos about the topics in this chapter._
+
 ### Go to Step 6
 
 Ready to go to the Step 6 branch?
 
-1. In the Terminal, make sure you are in the **md101** directory.
-2. Enter the following command: `git checkout step_6`
+1. In the Terminal, make sure you are in the **md101** directory. (Use the `pwd` command to check your current directory. Use the `cd` command to change directories.)
+2. To change branches, enter the following command: `git checkout step_6`
 3. In STS, right-click the **end** project and select **Refresh** to make sure you're viewing the end state for Step 6.
-4. Refresh your browser (press **F5**) to see the README for Step 6.
+4. Refresh Firefox to view the README for Step 6. (You may need to scroll up after refreshing.)
