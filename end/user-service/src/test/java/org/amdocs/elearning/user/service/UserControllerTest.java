@@ -1,13 +1,13 @@
-package org.amdocs.elearning.user.middle;
+package org.amdocs.elearning.user.service;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.amdocs.elearning.user.middle.user.User;
-import org.amdocs.elearning.user.middle.user.UserDetails;
-import org.amdocs.elearning.user.middle.user.UserController;
-import org.amdocs.elearning.user.middle.user.UserService;
-import org.amdocs.elearning.user.middle.user.UserType;
+import org.amdocs.elearning.user.service.user.User;
+import org.amdocs.elearning.user.service.user.UserController;
+import org.amdocs.elearning.user.service.user.UserDetails;
+import org.amdocs.elearning.user.service.user.UserService;
+import org.amdocs.elearning.user.service.user.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
