@@ -561,14 +561,6 @@ Go ahead and try running your tests. If you haven't already, stop your server wi
 Make sure you're still in the root directory of the project (**md101/sandbox/user-service**). Then repackage the application with the `mvn clean verify` command. If all goes well, you should see output similar to the screenshots below.
 
 
-_Tests Running_
-
-![Unit Tests](images/PassingTests.png "Unit Test")
-
-_Tests Passed_
-
-![Integration Tests](images/integration.png "Integration Test")
-
 Build Successful
 
 ![Successful Build](images/success.png "Successful Build")
