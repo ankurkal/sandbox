@@ -1,4 +1,4 @@
-package org.amdocs.elearning.user.middle.user;
+package org.amdocs.elearning.user.service.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

@@ -1,6 +1,6 @@
-package org.amdocs.elearning.user.middle;
+package org.amdocs.elearning.user.service;
 
-import org.amdocs.elearning.user.middle.user.UserService;
+import org.amdocs.elearning.user.service.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

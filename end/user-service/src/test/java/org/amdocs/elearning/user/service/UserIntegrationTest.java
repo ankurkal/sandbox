@@ -1,10 +1,10 @@
-package org.amdocs.elearning.user.middle;
+package org.amdocs.elearning.user.service;
 
 import java.time.LocalDate;
 
-import org.amdocs.elearning.user.middle.user.User;
-import org.amdocs.elearning.user.middle.user.UserDetails;
-import org.amdocs.elearning.user.middle.user.UserType;
+import org.amdocs.elearning.user.service.user.User;
+import org.amdocs.elearning.user.service.user.UserDetails;
+import org.amdocs.elearning.user.service.user.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package org.amdocs.elearning.user.middle;
+package org.amdocs.elearning.user.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
