@@ -1,6 +1,6 @@
 # MD101 - Step 5: Creating New Users
 
-Currently, your **user-middle** application has functionality for retrieving users with a GET method. But right now there's no way to add a new user to the system (other than hard-coding one in your `UserService` class).
+Currently, your **user-service** application has functionality for retrieving users with a GET method. But right now there's no way to add a new user to the system (other than hard-coding one in your `UserService` class).
 
 In this step, you will get an introduction to the POST method in the context of REST. When you are finished with this step, you will be able to create new users in your service using HTTP and REST calls.
 
@@ -18,7 +18,7 @@ Typically, the POST method is used to invoke function-oriented resources in a co
 
 ![Rest Diagram](images/Post.png "HTTP REST Request")
 
-### How Does POST Fit Into user-middle?
+### How Does POST Fit Into user-service?
 
 In this step, you will create a new endpoint that uses the POST verb to create new users for your application. When you are done, you'll have an endpoint that looks something like the code block below.
 
@@ -36,9 +36,9 @@ Response:
 
 ---
 
-## Implementing POST Into user-middle
+## Implementing POST Into user-service
 
-To implement a POST action into **user-middle**, you'll need to do several things:
+To implement a POST action into **user-service**, you'll need to do several things:
 
 1. Implement a method in `UserService` that can create users.
 2. Create a new POST method in `UserController` that can delegate to the `UserService` class and respond accordingly.
@@ -71,10 +71,10 @@ Right now the `UserService` class only has a method for retrieving users. You ne
 
 The requirements above present a unique challenge given how the `User` object is currently implemented. It is immutable, and therefore offers no setters for setting a user ID. To get around this, you're going to create a separate class for user details.
 
-Add a class called `UserDetails` in the `org.amdocs.elearning.user.middle.user` package within `src/main/java`. Then add the following code to **UserDetails.java**.
+Add a class called `UserDetails` in the `org.amdocs.elearning.user.service.user` package within `src/main/java`. Then add the following code to **UserDetails.java**.
 
 ```java
-package org.amdocs.elearning.user.middle.user;
+package org.amdocs.elearning.user.service.user;
 
 import java.time.LocalDate;
 
@@ -126,7 +126,7 @@ public class UserDetails {
 Now refactor the `User` class by removing the user details and extending it as a subclass of your new `UserDetails` class. Here's how your **User.java** code should look.
 
 ```java
-package org.amdocs.elearning.user.middle.user;
+package org.amdocs.elearning.user.service.user;
 
 import java.time.LocalDate;
 
@@ -168,7 +168,7 @@ public class User extends UserDetails {
 There's one last modification to make for this refactor. You need to add a new `createUser` method in `UserService`. Your **UserService.java** should look like the following.
 
 ```java
-package org.amdocs.elearning.user.middle.user;
+package org.amdocs.elearning.user.service.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -217,7 +217,7 @@ Now that `UserService` is able to create a user, you can wire up this functional
 Your code for `UserController` should now look something like the following.
 
 ```java
-package org.amdocs.elearning.user.middle.user;
+package org.amdocs.elearning.user.service.user;
 
 import java.util.Optional;
 
@@ -276,7 +276,7 @@ One important thing to notice is that your controller is just acting as a broker
 
 ### Building and Running
 
-It's time to restart your server and see what you've built! In the Terminal, make sure you're in the **md101/sandbox/user-middle** directory. Then run the `mvn clean package` command followed by `java -jar target/*.jar` command.
+It's time to restart your server and see what you've built! In the Terminal, make sure you're in the **md101/sandbox/user-service** directory. Then run the `mvn clean package` command followed by `java -jar target/*.jar` command.
 
 Your application is now running. But how will access your new endpoint? You can't exactly use a browser like you could with a regular GET request (at least not without a fair amount of work and integration with a front end). Luckily, there's another method. The cURL tool provides a command-line utility for making HTTP requests. You can use `curl` to test your endpoint.
 
@@ -482,10 +482,10 @@ The code block below shows how the changed portions of **UserServiceTest.java** 
 import java.time.LocalDate;
 import java.util.Optional;
 
-import org.amdocs.elearning.user.middle.user.User;
-import org.amdocs.elearning.user.middle.user.UserDetails;
-import org.amdocs.elearning.user.middle.user.UserService;
-import org.amdocs.elearning.user.middle.user.UserType;
+import org.amdocs.elearning.user.service.user.User;
+import org.amdocs.elearning.user.service.user.UserDetails;
+import org.amdocs.elearning.user.service.user.UserService;
+import org.amdocs.elearning.user.service.user.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -516,9 +516,9 @@ The code block below shows how the changed portions of **UserIntegrationTest.jav
 ```java
 import java.time.LocalDate;
 
-import org.amdocs.elearning.user.middle.user.User;
-import org.amdocs.elearning.user.middle.user.UserDetails;
-import org.amdocs.elearning.user.middle.user.UserType;
+import org.amdocs.elearning.user.service.user.User;
+import org.amdocs.elearning.user.service.user.UserDetails;
+import org.amdocs.elearning.user.service.user.UserType;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -558,7 +558,7 @@ public class UserIntegrationTest {
 
 Go ahead and try running your tests. If you haven't already, stop your server with **CTRL+C** in the Terminal window where its running.
 
-Make sure you're still in the root directory of the project (**md101/sandbox/user-middle**). Then repackage the application with the `mvn clean verify` command. If all goes well, you should see output similar to the screenshots below.
+Make sure you're still in the root directory of the project (**md101/sandbox/user-service**). Then repackage the application with the `mvn clean verify` command. If all goes well, you should see output similar to the screenshots below.
 
 
 _Tests Running_
