@@ -449,9 +449,22 @@ To test how `UserController` handles the POST action, write a unit test inside `
   * Return a 201 status code.
   * Return a response body similar to the user that was passed in with the addition of an `id` property.
 
-The code block below shows how the changed portions of **UserControllerTest.java** should look. Notice how you are using Mockito to mock `UserService`, just as you did for the GET unit test. (See the **end** project in STS for the complete code.)
+The code block below shows how the changed portions of **UserControllerTest.java** should look. Notice how you are using Mockito to mock `UserService`, just as you did for the GET unit test. Also notice the new import statement for `UserDetails`--be sure to include this in your code! (See the **end** project in STS for the complete code.)
 
 ```java
+import java.time.LocalDate;
+import java.util.Optional;
+
+import org.amdocs.elearning.user.service.user.User;
+import org.amdocs.elearning.user.service.user.UserController;
+import org.amdocs.elearning.user.service.user.UserDetails;
+import org.amdocs.elearning.user.service.user.UserService;
+import org.amdocs.elearning.user.service.user.UserType;
+import org.junit.Assert;
+import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
+
 public class UserControllerTest {
 
 	UserService userService = Mockito.mock(UserService.class);
